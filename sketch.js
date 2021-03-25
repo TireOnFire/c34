@@ -1,97 +1,102 @@
-var database ,dog,dog1,dog2
-var position
-//var form
-var feed,add
-var foodobject
-var Feedtime
-var Lastfeed
-//Create variables here
+const Engine = Matter.Engine;
+const World= Matter.World;
+const Bodies = Matter.Bodies;
+const Constraint = Matter.Constraint;
 
-function preload()
+var engine, world;
 
-{
-  dogimg1 = loadImage("images/dogImg.png")
-  dogimg2 = loadImage("images/dogImg1.png")
-	//load images here
+var superman;
+
+var box1,box2,box3,box4,box5,box6,box7,box8,box9,box10;
+var box10,box12,box13,box14,box15,box16,box17,box18,box19,box20;
+
+function preload() {
+//preload the images here
+backgroundImg = loadImage("GamingBackground.png")
 }
-
 function setup() {
-	createCanvas(1000, 500);
-  database = firebase.database();
-  console.log(database);
- 
-  foodobject=new Food()
-  dog = createSprite(550,250,10,10);
-  dog.addImage(dogimg1)
-  dog.scale=0.2
-  
- 
+  var canvas = createCanvas(3000,800);
+  engine = Engine.create();
+  world = engine.world;  
+  // create sprites here
+  monster = new Monster(1300,300,200,200);
 
-  var dogo = database.ref('Food');
-  dogo.on("value", readPosition, showError);
-feed = createButton("FEED DRAGO")
-feed.position(500,15)
-feed.mousePressed(FeedDog)
-add = createButton("ADD FOOD")
-add.position(400,15)
-add.mousePressed(AddFood)
+   superman = new SuperMan(400,100,250,100);
 
-} 
+  box1 = new Box(800, 100, 50, 50);
+  box2 = new Box(800, 100, 50, 50);
+  box3 = new Box(800, 100, 50, 50);
+  box4 = new Box(800, 100, 50, 50);
+  box5 = new Box(800, 100, 50, 50);
+  box6 = new Box(800, 100, 50, 50);
+  box7 = new Box(800, 100, 50, 50);
 
+  box8 = new Box(900, 100, 50, 50);
+  box9 = new Box(900, 100, 50, 50);
+  box10 = new Box(900, 100, 50, 50);
+  box11 = new Box(900, 100, 50, 50);
+  box12= new Box(900, 100, 50, 50);
+  box13 = new Box(900, 100, 50, 50);
 
+  box14 = new Box(1000, 100, 50, 50);
+  box15 = new Box(1000, 100, 50, 50);
+  box16 = new Box(1000, 100, 50, 50);
+  box17 = new Box(1000, 100, 50, 50);
+  box18 = new Box(1000, 100, 50, 50);
+  box19 = new Box(1000, 100, 50, 50);
+  box20 = new Box(1000, 100, 50, 50);
+  box21 = new Box(1000, 100, 50, 50);
 
-function draw(){
- { background(46,139,87);
- foodobject.display()
- 
- }
- drawSprites();
-  
-  fill(255,255,254);
- textSize(15);
+  box22 = new Box(1100, 100, 50, 50);
+  box23 = new Box(1100, 100, 50, 50);
+  box24 = new Box(1100, 100, 50, 50);
+  box25 = new Box(1100, 100, 50, 50);
+  box26 = new Box(1100, 100, 50, 50);
 
-  // text("Note: Press UP_ARROW Key To Feed Drago Milk!",130,10,300,20);
- 
-  //add styles here
-drawSprites();
+  rope = new Rope(superman.body,{x:400,y:100});
+
+  ground = new Ground(1500,500,3000,20);
 }
-function readPosition(data){
-  position = data.val();
-  foodobject.updateFoodStock(position)
-  console.log(position.x);
-  
-}
+function draw() {
+  background(backgroundImg);
+  Engine.update(engine);
 
-function showError(){
-  console.log("Error in writing to the database");
-}
+  box1.display();
+  box2.display();
+  box3.display();
+  box4.display();
+  box5.display();
+  box6.display();
+  box7.display();
 
-function writePosition(nazo){
-  if(nazo>0){
-    nazo=nazo-1
-  }
-  else{
-    nazo=0
-  }
-  database.ref('/').set({
-    'Food': nazo
-  })
+   box8.display();
+   box9.display();
+   box10.display();
+   box11.display();
+  box12.display();
+  box13.display();
 
-}
-function AddFood(){
-position++
-database.ref('/').update({
-  Food:position
-}
+    box14.display();
+    box15.display();
+   box16.display();
+   box17.display();
+   box18.display();
+   box19.display();
+   box20.display();
+   box21.display();
 
-)
+   box22.display();
+   box23.display();
+   box24.display();
+   box25.display();
+   box26.display();
+   monster.display();
+  superman.display();
+  ground.display();
 }
-function FeedDog(){
-
-dog.addImage(dogimg2)
-foodobject.updateFoodStock(foodobject.getFoodStock()-1)
- database.ref('/').update({
-   Food:foodobject.getFoodStock(),
-   FeedTime:hour ()
- })
+function mouseDragged(){
+      Matter.Body.setPosition(superman.body, {x: mouseX , y: mouseY}); 
+}
+function mouseReleased(){
+  rope.fly();
 }
